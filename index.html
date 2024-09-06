@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa testowa</title>
+    <title>Mapa testowa z GeoJSON</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
@@ -25,6 +25,22 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
+
+        // Ładowanie pliku GeoJSON
+        fetch('https://raw.githubusercontent.com/mbakPVE/Projekty-PVE/main/test_punkt.geojson')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Dane GeoJSON:", data); // Logowanie danych GeoJSON, aby upewnić się, że są prawidłowe
+
+                // Dodanie warstwy GeoJSON do mapy
+                var geoLayer = L.geoJSON(data).addTo(map);
+
+                // Dopasowanie widoku mapy do warstwy GeoJSON
+                map.fitBounds(geoLayer.getBounds());
+            })
+            .catch(error => {
+                console.error('Błąd ładowania pliku GeoJSON:', error);
+            });
 
     </script>
 
